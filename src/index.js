@@ -6,14 +6,8 @@ import Ship from "./ship.js";
 
 const gameboardInstance = new Gameboard();
 const shipInstance = new Ship(4);
+const shipInstance2 = new Ship(3);
 gameboardInstance.placeShip([4, 4], shipInstance);
 gameboardInstance.rotateShip([4, 4]);
-console.log(shipInstance.getOrientation());
-gameboardInstance.receiveAttack([4, 4]);
-console.log(shipInstance.getOrientation());
-gameboardInstance.receiveAttack([5, 4]);
-gameboardInstance.receiveAttack([6, 4]);
-console.log(shipInstance.getOrientation());
-gameboardInstance.receiveAttack([7, 4]);
-console.log(shipInstance.getOrientation());
+gameboardInstance.placeShip([2, 4], shipInstance2);
 console.log(gameboardInstance.getBoard());

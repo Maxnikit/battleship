@@ -65,3 +65,13 @@ test("sunk a horizontal ship at 0:0", () => {
   expect(gameboardInstance.getBoard()[1][2]).toBe("miss");
   expect(gameboardInstance.getBoard()[1][3]).toBe("miss");
 });
+
+test("try to put a ship next to another ship", () => {
+  const shipInstance = new Ship(4);
+  gameboardInstance.placeShip([0, 0], shipInstance);
+  const shipInstance2 = new Ship(4);
+
+  expect(() => {
+    gameboardInstance.placeShip([1, 0], shipInstance2);
+  }).toThrow();
+});

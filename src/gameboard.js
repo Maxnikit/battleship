@@ -18,11 +18,20 @@ class Gameboard {
   }
 
   placeShip(startingLocation, ship) {
+    // Check if ship is out of bounds
     if (
       startingLocation[0] + ship.length > this.size ||
       startingLocation[1] + ship.length > this.size
     ) {
       throw new Error("Ship is out of bounds");
+    }
+    // Check if other ships are too close
+    for (let i = 0; i < ship.length; i++) {
+      const adjacentShipLocations =
+        this.findAdjacentLocations(startingLocation)[1];
+      if (adjacentShipLocations.length > 0) {
+        throw new Error("Ships are too close");
+      }
     }
 
     if (ship.orientation === "horizontal") {
