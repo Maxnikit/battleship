@@ -55,6 +55,7 @@ class Gameboard {
   }
 
   rotateShip(location) {
+    // TODO implement check for collision and adjustent ships
     const ship = this.board[location[0]][location[1]];
     this.removeShip(location, ship);
     ship.rotate();
@@ -62,9 +63,12 @@ class Gameboard {
   }
 
   receiveAttack(location) {
+    if (this.board[location[0]][location[1]] === "miss") {
+      return "already hit";
+    }
     if (this.board[location[0]][location[1]] === 0) {
       this.board[location[0]][location[1]] = "miss";
-      return false;
+      return "miss";
     }
     this.board[location[0]][location[1]].hit(location);
 
@@ -72,7 +76,7 @@ class Gameboard {
       this.processSinking(this.board[location[0]][location[1]].location);
     }
 
-    return true;
+    return "hit";
   }
 
   processSinking(location) {

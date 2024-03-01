@@ -27,11 +27,20 @@ class Ship {
   }
 
   hit(location) {
+    //TODO check if ship is already hit in that location and return early
+    console.log(this.hits);
+    console.log(location);
+    console.log(this.hits.includes(location));
+    if (this.hits.includes(location)) {
+      console.log(includes);
+      return;
+    }
+
     if (this.health > 0) {
       this.hits.push(location);
       this.health -= 1;
     } else {
-      throw new Error("Cannot hit a ship with health of 0");
+      return;
     }
 
     if (this.health === 0) {

@@ -8,6 +8,9 @@ class Player {
     this.isWinner = false;
   }
 
+  getBoard() {
+    return this.board;
+  }
   placeShip(location, ship) {
     this.board.placeShip(location, ship);
     this.ships.push(ship);
@@ -15,11 +18,6 @@ class Player {
 
   rotateShip(location) {
     this.board.rotateShip(location);
-  }
-
-  makeMove(location) {
-    if (this.board.receiveAttack(location)) {
-    }
   }
 }
 

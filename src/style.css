@@ -1,0 +1,29 @@
+#gameBoardsContainer {
+  display: flex;
+  gap: 50px;
+}
+.gameBoard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  /* grid-gap: 2px; */
+  width: 500px;
+  height: 500px;
+}
+.cell {
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  text-align: center;
+  line-height: 50px;
+}
+
+.ship {
+  background-color: blue;
+}
+.miss {
+  background-color: grey;
+}
+.free {
+}
+.hit {
+  background-color: red;
+}
