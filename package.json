@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack serve --open-app-name 'chrome'",
-    "test": "jest"
+    "test": "jest",
+    "watch": "jest --watch *test.js"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@jest/globals": "^29.7.0",
     "normalize.css": "^8.0.1"
   }
 }
