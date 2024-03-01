@@ -62,9 +62,11 @@ class Gameboard {
       return false;
     }
     this.board[location[0]][location[1]].hit(location);
+
     if (this.board[location[0]][location[1]].isSunk()) {
       this.processSinking(this.board[location[0]][location[1]].location);
     }
+
     return true;
   }
 
@@ -72,15 +74,18 @@ class Gameboard {
     const ship = this.board[location[0]][location[1]];
     let adjacentLocations = [];
     for (let i = 0; i < ship.length; i++) {
-      if ((ship.orientation = "horizontal")) {
-        adjacentLocations = this.findAdjacentLocations([
-          location[0] + i,
-          location[1],
-        ]);
-      } else if ((ship.orientation = "vertical")) {
+      if (ship.orientation === "horizontal") {
+        console.log(location);
         adjacentLocations = this.findAdjacentLocations([
           location[0],
           location[1] + i,
+        ]);
+        console.log("HORIZONTAL");
+        console.log(adjacentLocations);
+      } else if (ship.orientation === "vertical") {
+        adjacentLocations = this.findAdjacentLocations([
+          location[0] + i,
+          location[1],
         ]);
       }
       for (let i = 0; i < adjacentLocations[0].length; i++) {

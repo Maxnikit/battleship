@@ -33,6 +33,7 @@ test("rotate a ship and make sure it's horizontal version is deleted", () => {
   const shipInstance = new Ship(2);
   gameboardInstance.placeShip([0, 0], shipInstance);
   gameboardInstance.rotateShip([0, 0]);
+  expect(shipInstance.orientation).toBe("vertical");
   expect(gameboardInstance.getBoard()[0][1]).toBe(0);
   expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
   expect(gameboardInstance.getBoard()[1][0]).toBe(shipInstance);
@@ -46,4 +47,21 @@ test("sunk a vertical 4ship in middle of board", () => {
   gameboardInstance.receiveAttack([6, 4]);
   gameboardInstance.receiveAttack([7, 4]);
   expect(shipInstance.isSunk()).toBe(true);
+  expect(gameboardInstance.getBoard()[3][4]).toBe("miss");
+  expect(gameboardInstance.getBoard()[8][4]).toBe("miss");
+  expect(gameboardInstance.getBoard()[3][5]).toBe("miss");
+});
+
+test("sunk a horizontal ship at 0:0", () => {
+  const shipInstance = new Ship(4);
+  gameboardInstance.placeShip([0, 0], shipInstance);
+  gameboardInstance.receiveAttack([0, 0]);
+  gameboardInstance.receiveAttack([0, 1]);
+  gameboardInstance.receiveAttack([0, 1]);
+  gameboardInstance.receiveAttack([0, 1]);
+  expect(shipInstance.isSunk()).toBe(true);
+  expect(gameboardInstance.getBoard()[1][0]).toBe("miss");
+  expect(gameboardInstance.getBoard()[1][1]).toBe("miss");
+  expect(gameboardInstance.getBoard()[1][2]).toBe("miss");
+  expect(gameboardInstance.getBoard()[1][3]).toBe("miss");
 });
