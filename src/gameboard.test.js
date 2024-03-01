@@ -75,3 +75,18 @@ test("try to put a ship next to another ship", () => {
     gameboardInstance.placeShip([1, 0], shipInstance2);
   }).toThrow();
 });
+
+test("check if board knows when all ships are sunk", () => {
+  const shipInstance = new Ship(4);
+
+  gameboardInstance.placeShip([0, 0], shipInstance);
+  expect(gameboardInstance.areAllShipsSunk()).toBe(false);
+  gameboardInstance.receiveAttack([0, 0]);
+  gameboardInstance.receiveAttack([0, 1]);
+  gameboardInstance.receiveAttack([0, 2]);
+  gameboardInstance.receiveAttack([0, 3]);
+  const shipInstance2 = new Ship(1);
+  gameboardInstance.placeShip([8, 0], shipInstance2);
+  gameboardInstance.receiveAttack([8, 0]);
+  expect(gameboardInstance.areAllShipsSunk()).toBe(true);
+});

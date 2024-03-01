@@ -9,10 +9,6 @@ class Gameboard {
     }
   }
 
-  printBoard() {
-    console.log(this.board.map((row) => row.join(" ")).join("\n"));
-  }
-
   getBoard() {
     return this.board;
   }
@@ -84,13 +80,10 @@ class Gameboard {
     let adjacentLocations = [];
     for (let i = 0; i < ship.length; i++) {
       if (ship.orientation === "horizontal") {
-        console.log(location);
         adjacentLocations = this.findAdjacentLocations([
           location[0],
           location[1] + i,
         ]);
-        console.log("HORIZONTAL");
-        console.log(adjacentLocations);
       } else if (ship.orientation === "vertical") {
         adjacentLocations = this.findAdjacentLocations([
           location[0] + i,
@@ -100,7 +93,6 @@ class Gameboard {
       for (let i = 0; i < adjacentLocations[0].length; i++) {
         this.receiveAttack(adjacentLocations[0][i]);
       }
-      console.log(adjacentLocations);
     }
   }
 
@@ -127,8 +119,18 @@ class Gameboard {
         }
       }
     }
-    console.log(`checked ${location}, found ${shipLocations}`);
+
     return [freeLocations, shipLocations, missLocations];
+  }
+  areAllShipsSunk() {
+    for (let row of this.board) {
+      for (let cell of row) {
+        if (cell instanceof Ship && !cell.isSunk()) {
+          return false; // Found a ship that is not sunk
+        }
+      }
+    }
+    return true; // No ships found that are not sunk
   }
 }
 

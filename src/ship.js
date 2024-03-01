@@ -45,7 +45,6 @@ class Ship {
     } else {
       this.orientation = "horizontal";
     }
-    console.log(`rotated to ${this.orientation}`);
   }
 
   isSunk() {
