@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1709318789055" clover="3.2.0">
-  <project timestamp="1709318789055" name="All files">
+<coverage generated="1709318978205" clover="3.2.0">
+  <project timestamp="1709318978205" name="All files">
     <metrics statements="81" coveredstatements="72" conditionals="39" coveredconditionals="33" methods="17" coveredmethods="13" elements="137" coveredelements="118" complexity="0" loc="81" ncloc="81" packages="1" files="2" classes="2"/>
     <file name="gameboard.js" path="C:\Users\Никитина Юлия\Documents\VScode\battleship\src\gameboard.js">
       <metrics statements="56" coveredstatements="52" conditionals="29" coveredconditionals="26" methods="10" coveredmethods="8"/>

@@ -8,7 +8,7 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "rules": { "no-console": "off" },
+  "rules": { "no-console": "off", "allowForLoopAfterthoughts": true },
   "overrides": [
     {
       "files": ["tests/**/*"],
