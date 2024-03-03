@@ -24,17 +24,17 @@ class Gamelogic {
   placeShips() {
     this.player1.getBoard().placeShip([0, 0], new Ship(4));
     this.player1.getBoard().placeShip([2, 0], new Ship(4));
-    this.player1.getBoard().rotateShip([2, 0]);
-
+    this.player1.getBoard().rotateShip([0, 0]);
+    this.player1.getBoard().placeShip([1, 0], new Ship(3));
     DOM.displayBoard(this.player1.getBoard(), "left");
   }
 
   attack() {
-    this.player1.getBoard().receiveAttack([5, 0]);
-    this.player1.getBoard().receiveAttack([2, 0]);
-    this.player1.getBoard().receiveAttack([3, 0]);
-    this.player1.getBoard().receiveAttack([4, 0]);
-    this.player1.getBoard().receiveAttack([0, 0]);
+    // this.player1.getBoard().receiveAttack([5, 0]);
+    // this.player1.getBoard().receiveAttack([2, 0]);
+    // this.player1.getBoard().receiveAttack([3, 0]);
+    // this.player1.getBoard().receiveAttack([4, 0]);
+    // this.player1.getBoard().receiveAttack([0, 0]);
     DOM.displayBoard(this.player1.getBoard(), "left");
   }
 }

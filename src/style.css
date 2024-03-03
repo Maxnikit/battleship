@@ -10,20 +10,39 @@
   height: 500px;
 }
 .cell {
-  background-color: #ddd;
   border: 1px solid #ccc;
   text-align: center;
-  line-height: 50px;
+  /* line-height: 50px; */
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
 }
-
+.cell:hover {
+  background-color: #ccc;
+  border: 1px solid #29c22e;
+}
+.free {
+  background-color: #ddd;
+}
 .ship {
   background-color: blue;
+}
+.ship:hover {
+  background-color: darkblue;
 }
 .miss {
   background-color: grey;
 }
-.free {
+.miss:hover {
+  background-color: darkgrey;
 }
 .hit {
   background-color: red;
+  background-image: url(./assets/close.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.hit:hover {
+  background-color: darkred;
 }

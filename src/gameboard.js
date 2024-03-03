@@ -14,6 +14,8 @@ class Gameboard {
   }
 
   placeShip(startingLocation, ship) {
+    console.log(ship.positions);
+
     // Check if ship is out of bounds
     if (
       startingLocation[0] + ship.length > this.size ||
@@ -22,26 +24,63 @@ class Gameboard {
       throw new Error("Ship is out of bounds");
     }
     // Check if other ships are too close
-    for (let i = 0; i < ship.length; i++) {
-      const adjacentShipLocations =
-        this.findAdjacentLocations(startingLocation)[1];
-      if (adjacentShipLocations.length > 0) {
-        throw new Error("Ships are too close");
-      }
-    }
 
+    const result = this.checkForShipCollision(startingLocation, ship);
+    if (result === false) {
+      return;
+    }
     if (ship.orientation === "horizontal") {
       for (let i = 0; i < ship.length; i++) {
-        this.board[startingLocation[0]][startingLocation[1] + i] = ship;
+        ship.positions.push([startingLocation[0], startingLocation[1] + i]);
+
+        // this.board[startingLocation[0]][startingLocation[1] + i] = ship;
       }
     } else {
       for (let i = 0; i < ship.length; i++) {
-        this.board[startingLocation[0] + i][startingLocation[1]] = ship;
+        ship.positions.push([startingLocation[0] + i, startingLocation[1]]);
+
+        // this.board[startingLocation[0] + i][startingLocation[1]] = ship;
+      }
+    }
+    console.log(ship.positions);
+    let collisionTestResults = [];
+    ship.positions.forEach((position) => {
+      collisionTestResults.push(this.checkForShipCollision(position, ship));
+    });
+    console.log(collisionTestResults);
+    if (collisionTestResults.includes(false)) {
+      return false;
+    } else {
+      if (ship.orientation === "horizontal") {
+        for (let i = 0; i < ship.length; i++) {
+          this.board[startingLocation[0]][startingLocation[1] + i] = ship;
+        }
+      } else if (ship.orientation === "vertical") {
+        for (let i = 0; i < ship.length; i++) {
+          this.board[startingLocation[0] + i][startingLocation[1]] = ship;
+        }
       }
     }
     ship.location = startingLocation;
   }
+  checkForShipCollision(startingLocation, ship) {
+    for (let i = 0; i < ship.length; i++) {
+      const adjacentShipLocations =
+        this.findAdjacentLocations(startingLocation)[1];
 
+      if (
+        adjacentShipLocations.some(
+          (location) => this.board[location[0]][location[1]] !== ship
+        )
+      ) {
+        console.log("collision detected");
+        return false;
+      } else {
+        console.log("no collision");
+        return true;
+      }
+    }
+  }
   removeShip(startingLocation, ship) {
     if (ship.orientation === "horizontal") {
       for (let i = 0; i < ship.length; i++) {
@@ -55,11 +94,12 @@ class Gameboard {
   }
 
   rotateShip(location) {
-    // TODO implement check for collision and adjustent ships
+    // TODO implement check for collision and adjustment ships
     const ship = this.board[location[0]][location[1]];
     this.removeShip(location, ship);
     ship.rotate();
     this.placeShip(location, ship);
+    // this.checkForShipCollision(location, ship);
   }
 
   receiveAttack(location) {

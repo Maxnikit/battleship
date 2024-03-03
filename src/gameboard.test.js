@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { expect, test } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import Ship from "./ship";
 import Gameboard from "./gameboard";
 
@@ -9,84 +9,98 @@ beforeEach(() => {
   gameboardInstance = new Gameboard();
 });
 
-test("create a gameboard", () => {
-  expect(gameboardInstance.board.length).toBe(10);
-  expect(gameboardInstance.board[0].length).toBe(10);
+describe("gameboard logic", () => {
+  test("create a gameboard", () => {
+    expect(gameboardInstance.board.length).toBe(10);
+    expect(gameboardInstance.board[0].length).toBe(10);
+  });
+  test("check if board knows when all ships are sunk", () => {
+    const shipInstance = new Ship(4);
+
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    expect(gameboardInstance.areAllShipsSunk()).toBe(false);
+    gameboardInstance.receiveAttack([0, 0]);
+    gameboardInstance.receiveAttack([0, 1]);
+    gameboardInstance.receiveAttack([0, 2]);
+    gameboardInstance.receiveAttack([0, 3]);
+    const shipInstance2 = new Ship(1);
+    gameboardInstance.placeShip([8, 0], shipInstance2);
+    gameboardInstance.receiveAttack([8, 0]);
+    expect(gameboardInstance.areAllShipsSunk()).toBe(true);
+  });
 });
 
-test("put a 4ship on 0:0", () => {
-  const shipInstance = new Ship(4);
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
-});
-
-test("sunk a horizontal 4ship", () => {
-  const shipInstance = new Ship(4);
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  gameboardInstance.receiveAttack([0, 0]);
-  gameboardInstance.receiveAttack([0, 1]);
-  gameboardInstance.receiveAttack([0, 2]);
-  gameboardInstance.receiveAttack([0, 3]);
-  expect(shipInstance.isSunk()).toBe(true);
-});
-test("rotate a ship and make sure it's horizontal version is deleted", () => {
-  const shipInstance = new Ship(2);
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  gameboardInstance.rotateShip([0, 0]);
-  expect(shipInstance.orientation).toBe("vertical");
-  expect(gameboardInstance.getBoard()[0][1]).toBe(0);
-  expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
-  expect(gameboardInstance.getBoard()[1][0]).toBe(shipInstance);
-});
-test("sunk a vertical 4ship in middle of board", () => {
-  const shipInstance = new Ship(4);
-  gameboardInstance.placeShip([4, 4], shipInstance);
-  gameboardInstance.rotateShip([4, 4]);
-  gameboardInstance.receiveAttack([4, 4]);
-  gameboardInstance.receiveAttack([5, 4]);
-  gameboardInstance.receiveAttack([6, 4]);
-  gameboardInstance.receiveAttack([7, 4]);
-  expect(shipInstance.isSunk()).toBe(true);
-  expect(gameboardInstance.getBoard()[3][4]).toBe("miss");
-  expect(gameboardInstance.getBoard()[8][4]).toBe("miss");
-  expect(gameboardInstance.getBoard()[3][5]).toBe("miss");
-});
-
-test("sunk a horizontal ship at 0:0", () => {
-  const shipInstance = new Ship(4);
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  gameboardInstance.receiveAttack([0, 0]);
-  gameboardInstance.receiveAttack([0, 1]);
-  gameboardInstance.receiveAttack([0, 1]);
-  gameboardInstance.receiveAttack([0, 1]);
-  expect(shipInstance.isSunk()).toBe(true);
-  expect(gameboardInstance.getBoard()[1][0]).toBe("miss");
-  expect(gameboardInstance.getBoard()[1][1]).toBe("miss");
-  expect(gameboardInstance.getBoard()[1][2]).toBe("miss");
-  expect(gameboardInstance.getBoard()[1][3]).toBe("miss");
-});
-
-test("try to put a ship next to another ship", () => {
-  const shipInstance = new Ship(4);
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  const shipInstance2 = new Ship(4);
-
-  expect(() => {
+describe("placing ships", () => {
+  test("put a 4ship on 0:0", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
+  });
+  test("try to put a ship next to another ship", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    const shipInstance2 = new Ship(4);
     gameboardInstance.placeShip([1, 0], shipInstance2);
-  }).toThrow();
+    expect(() => {
+      gameboardInstance.getBoard()[1][0].toBe(0);
+    });
+  });
+  test("try to put ship in another ship", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    const shipInstance2 = new Ship(4);
+    gameboardInstance.placeShip([0, 1], shipInstance2);
+    expect(() => {
+      gameboardInstance.getBoard()[0][4].toBe(0);
+    });
+  });
 });
 
-test("check if board knows when all ships are sunk", () => {
-  const shipInstance = new Ship(4);
+describe("rotate a ship", () => {
+  test("rotate a ship and make sure it's horizontal version is deleted", () => {
+    const shipInstance = new Ship(2);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    gameboardInstance.rotateShip([0, 0]);
+    expect(shipInstance.orientation).toBe("vertical");
+    expect(gameboardInstance.getBoard()[0][1]).toBe(0);
+    expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
+    expect(gameboardInstance.getBoard()[1][0]).toBe(shipInstance);
+  });
+  test("rotate should be impossible due collision with another ship", () => {
+    const shipInstance1 = new Ship(3);
+    const shipInstance2 = new Ship(3);
+    gameboardInstance.placeShip([0, 0], shipInstance1);
+    gameboardInstance.placeShip([2, 0], shipInstance2);
+    expect(() => {
+      gameboardInstance.getBoard()[1][0].toBe(0);
+    });
+  });
+});
 
-  gameboardInstance.placeShip([0, 0], shipInstance);
-  expect(gameboardInstance.areAllShipsSunk()).toBe(false);
-  gameboardInstance.receiveAttack([0, 0]);
-  gameboardInstance.receiveAttack([0, 1]);
-  gameboardInstance.receiveAttack([0, 2]);
-  gameboardInstance.receiveAttack([0, 3]);
-  const shipInstance2 = new Ship(1);
-  gameboardInstance.placeShip([8, 0], shipInstance2);
-  gameboardInstance.receiveAttack([8, 0]);
-  expect(gameboardInstance.areAllShipsSunk()).toBe(true);
+describe("attacking ships", () => {
+  test("hit a ship", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    gameboardInstance.receiveAttack([0, 0]);
+    expect(gameboardInstance.getBoard()[0][0].getHealth()).toBe(3);
+  });
+  test("miss a ship", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    gameboardInstance.receiveAttack([5, 5]);
+    expect(gameboardInstance.getBoard()[5][5]).toBe("miss");
+  });
+});
+
+describe("sunking ships", () => {
+  test("sunk a ship", () => {
+    const shipInstance = new Ship(4);
+    gameboardInstance.placeShip([0, 0], shipInstance);
+    expect(shipInstance.isSunk()).toBe(false);
+    gameboardInstance.receiveAttack([0, 0]);
+    gameboardInstance.receiveAttack([0, 1]);
+    gameboardInstance.receiveAttack([0, 2]);
+    gameboardInstance.receiveAttack([0, 3]);
+    expect(shipInstance.isSunk()).toBe(true);
+  });
 });

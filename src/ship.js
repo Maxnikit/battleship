@@ -8,7 +8,7 @@ class Ship {
     this.sunk = false;
     this.length = length;
     this.hits = [];
-    this.position = [];
+    this.positions = [];
     this.health = length - this.hits;
     this.orientation = "horizontal";
     this.location = [];
@@ -27,13 +27,10 @@ class Ship {
   }
 
   hit(location) {
-    //TODO check if ship is already hit in that location and return early
-    console.log(this.hits);
-    console.log(location);
-    console.log(this.hits.includes(location));
-    if (this.hits.includes(location)) {
-      console.log(includes);
-      return;
+    for (let hit of this.hits) {
+      if (hit[0] === location[0] && hit[1] === location[1]) {
+        return;
+      }
     }
 
     if (this.health > 0) {
