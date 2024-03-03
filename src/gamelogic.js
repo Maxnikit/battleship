@@ -1,6 +1,7 @@
 import DOM from "./dom";
 import Player from "./player";
 import Ship from "./ship";
+import Gameboard from "./gameboard";
 
 class Gamelogic {
   constructor() {
@@ -16,11 +17,29 @@ class Gamelogic {
     return this.player2;
   }
   initGame() {
-    DOM.displayBoard(this.player1.getBoard(), "left");
-    DOM.displayBoard(this.player2.getBoard(), "right");
-    DOM.addEventListeners(this.player1.getBoard(), this.player2.getBoard());
+    const chooseBoard = new Gameboard(8);
+    const leftBoard = this.player1.getBoard();
+    const rightBoard = this.player2.getBoard();
+    this.placeStartingShips(chooseBoard);
+    // TODO make drag and drop or choose feauture to place ships
+    DOM.displayBoard(chooseBoard, "choose");
+    DOM.displayBoard(leftBoard, "left");
+    // DOM.displayBoard(rightBoard, "right");
+    DOM.initChoose(chooseBoard, leftBoard);
+    // DOM.addEventListeners(this.player1.getBoard(), this.player2.getBoard());
   }
-
+  placeStartingShips(chooseBoard) {
+    chooseBoard.placeShip([0, 0], new Ship(4));
+    chooseBoard.placeShip([2, 0], new Ship(3));
+    chooseBoard.placeShip([2, 4], new Ship(3));
+    chooseBoard.placeShip([4, 0], new Ship(2));
+    chooseBoard.placeShip([4, 3], new Ship(2));
+    chooseBoard.placeShip([4, 6], new Ship(2));
+    chooseBoard.placeShip([6, 0], new Ship(1));
+    chooseBoard.placeShip([6, 2], new Ship(1));
+    chooseBoard.placeShip([6, 4], new Ship(1));
+    chooseBoard.placeShip([6, 6], new Ship(1));
+  }
   placeShips() {
     this.player1.getBoard().placeShip([0, 0], new Ship(4));
     this.player1.getBoard().placeShip([2, 0], new Ship(4));

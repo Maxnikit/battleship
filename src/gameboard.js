@@ -1,8 +1,8 @@
 import Ship from "./ship";
 
 class Gameboard {
-  constructor() {
-    this.size = 10;
+  constructor(size = 10) {
+    this.size = size;
     this.board = [];
     for (let i = 0; i < this.size; i++) {
       this.board[i] = new Array(this.size).fill(0);
@@ -12,7 +12,9 @@ class Gameboard {
   getBoard() {
     return this.board;
   }
-
+  getShip(location) {
+    return this.board[location[0]][location[1]];
+  }
   placeShip(startingLocation, ship) {
     console.log(ship.positions);
 

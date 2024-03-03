@@ -25,7 +25,9 @@ class Ship {
   getOrientation() {
     return this.orientation;
   }
-
+  getPositions() {
+    return this.positions;
+  }
   hit(location) {
     for (let hit of this.hits) {
       if (hit[0] === location[0] && hit[1] === location[1]) {
