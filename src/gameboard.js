@@ -16,8 +16,6 @@ class Gameboard {
     return this.board[location[0]][location[1]];
   }
   placeShip(startingLocation, ship) {
-    console.log(ship.positions);
-
     // Check if ship is out of bounds
     if (
       startingLocation[0] + ship.length > this.size ||
@@ -44,12 +42,12 @@ class Gameboard {
         // this.board[startingLocation[0] + i][startingLocation[1]] = ship;
       }
     }
-    console.log(ship.positions);
+
     let collisionTestResults = [];
     ship.positions.forEach((position) => {
       collisionTestResults.push(this.checkForShipCollision(position, ship));
     });
-    console.log(collisionTestResults);
+
     if (collisionTestResults.includes(false)) {
       return false;
     } else {
@@ -64,6 +62,7 @@ class Gameboard {
       }
     }
     ship.location = startingLocation;
+    return true;
   }
   checkForShipCollision(startingLocation, ship) {
     for (let i = 0; i < ship.length; i++) {
@@ -75,10 +74,8 @@ class Gameboard {
           (location) => this.board[location[0]][location[1]] !== ship
         )
       ) {
-        console.log("collision detected");
         return false;
       } else {
-        console.log("no collision");
         return true;
       }
     }
@@ -96,12 +93,10 @@ class Gameboard {
   }
 
   rotateShip(location) {
-    // TODO implement check for collision and adjustment ships
     const ship = this.board[location[0]][location[1]];
     this.removeShip(location, ship);
     ship.rotate();
     this.placeShip(location, ship);
-    // this.checkForShipCollision(location, ship);
   }
 
   receiveAttack(location) {

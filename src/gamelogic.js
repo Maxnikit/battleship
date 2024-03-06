@@ -16,45 +16,29 @@ class Gamelogic {
   getPlayer2() {
     return this.player2;
   }
+
   initGame() {
-    const chooseBoard = new Gameboard(8);
     const leftBoard = this.player1.getBoard();
     const rightBoard = this.player2.getBoard();
-    this.placeStartingShips(chooseBoard);
-    // TODO make drag and drop or choose feauture to place ships
-    DOM.displayBoard(chooseBoard, "choose");
+
     DOM.displayBoard(leftBoard, "left");
+    DOM.placeShips(this);
     // DOM.displayBoard(rightBoard, "right");
-    DOM.initChoose(chooseBoard, leftBoard);
+
     // DOM.addEventListeners(this.player1.getBoard(), this.player2.getBoard());
   }
-  placeStartingShips(chooseBoard) {
-    chooseBoard.placeShip([0, 0], new Ship(4));
-    chooseBoard.placeShip([2, 0], new Ship(3));
-    chooseBoard.placeShip([2, 4], new Ship(3));
-    chooseBoard.placeShip([4, 0], new Ship(2));
-    chooseBoard.placeShip([4, 3], new Ship(2));
-    chooseBoard.placeShip([4, 6], new Ship(2));
-    chooseBoard.placeShip([6, 0], new Ship(1));
-    chooseBoard.placeShip([6, 2], new Ship(1));
-    chooseBoard.placeShip([6, 4], new Ship(1));
-    chooseBoard.placeShip([6, 6], new Ship(1));
-  }
-  placeShips() {
-    this.player1.getBoard().placeShip([0, 0], new Ship(4));
-    this.player1.getBoard().placeShip([2, 0], new Ship(4));
-    this.player1.getBoard().rotateShip([0, 0]);
-    this.player1.getBoard().placeShip([1, 0], new Ship(3));
-    DOM.displayBoard(this.player1.getBoard(), "left");
+
+  placeShip(location, shipNum) {
+    const leftBoard = this.player1.getBoard();
+    const ship = new Ship(shipNum);
+    if (leftBoard.placeShip(location, ship)) {
+      DOM.displayBoard(leftBoard, "left");
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  attack() {
-    // this.player1.getBoard().receiveAttack([5, 0]);
-    // this.player1.getBoard().receiveAttack([2, 0]);
-    // this.player1.getBoard().receiveAttack([3, 0]);
-    // this.player1.getBoard().receiveAttack([4, 0]);
-    // this.player1.getBoard().receiveAttack([0, 0]);
-    DOM.displayBoard(this.player1.getBoard(), "left");
-  }
+  attack() {}
 }
 export default Gamelogic;

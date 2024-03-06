@@ -3,25 +3,116 @@ const gameBoard2container = document.querySelector(".gameBoard.right");
 const chooseBoardContainer = document.querySelector("#chooseBoardContainer");
 import Gamelogic from "./gamelogic";
 class DOM {
-  initChoose(chooseBoard, gameBoard) {
-    const shipsDOM = document.querySelectorAll(".ship");
-    shipsDOM.forEach((ship) => {
-      ship.addEventListener("click", (e) => {
-        console.log(e);
-        const coords = e.target.id.split("-");
+  processFinishOfPlacement(shipNum) {
+    let counter;
+    if (shipNum === 4) {
+      counter = document.querySelector("#fourCount");
+      const ship4 = document.querySelector(".fourShip");
+      ship4.classList.toggle("selected");
+    } else if (shipNum === 3) {
+      counter = document.querySelector("#threeCount");
+      const ship3 = document.querySelector(".threeShip");
+      ship3.classList.toggle("selected");
+    } else if (shipNum === 2) {
+      counter = document.querySelector("#twoCount");
+      const ship2 = document.querySelector(".twoShip");
+      ship2.classList.toggle("selected");
+    } else if (shipNum === 1) {
+      counter = document.querySelector("#oneCount");
+      const ship1 = document.querySelector(".oneShip");
+      ship1.classList.toggle("selected");
+    } else {
+      console.log("WTF");
+    }
+    const currentCounter = parseInt(counter.innerHTML);
+    const newCounter = currentCounter - 1;
+    counter.innerHTML = newCounter + " x";
+  }
+  removeCellPlaceListeners() {
+    const cells = document.querySelectorAll(".gameBoard.left .cell");
 
-        const location = [parseInt(coords[0]), parseInt(coords[1])];
-        const shipObject = chooseBoard.getShip(location);
-        console.log(shipObject);
-        const cells = shipObject.getPositions();
-        console.log(cells);
-        cells.forEach((cell) => {
-          const cellElement = document.getElementById(`${cell[0]}-${cell[1]}`);
-          cellElement.classList.add("selected");
-        });
-        chooseBoard.removeShip(location, shipObject);
+    cells.forEach((cell) => {
+      const newCell = cell.cloneNode(true);
+      cell.parentNode.replaceChild(newCell, cell);
+      cell = newCell;
+    });
+  }
+  addCellPlaceListeners(gameLogic, shipNum) {
+    this.removeCellPlaceListeners();
+    const cells = document.querySelectorAll(".gameBoard.left .cell");
+
+    cells.forEach((cell) => {
+      cell.addEventListener("click", (e) => {
+        const location = cell.id.split("-");
+        location[0] = parseInt(location[0]);
+        location[1] = parseInt(location[1]);
+        // TODO check if user presses on other ships and change selection
+        // TODO fix bounds checking when placing new ship
+        if (gameLogic.placeShip(location, shipNum)) {
+          console.log("ship placed");
+          this.processFinishOfPlacement(shipNum);
+          return true;
+        } else {
+          console.log("ship not placed");
+          return false;
+        }
       });
     });
+  }
+  placeShips(gameLogic) {
+    // TODO check if 0 ships remaining, forbid placing new ones
+    console.log(gameLogic);
+
+    const ship4 = document.querySelector(".fourShip");
+    ship4.addEventListener("click", (e) => {
+      // if (ship1.classList.contains("selected")) {
+      ship1.classList.remove("selected");
+      ship2.classList.remove("selected");
+      ship3.classList.remove("selected");
+      this.removeCellPlaceListeners();
+      // }
+
+      ship4.classList.toggle("selected");
+      this.addCellPlaceListeners(gameLogic, 4);
+
+      //  this.updateShipCount(4);
+
+      console.log("unexpected");
+    });
+
+    const ship3 = document.querySelector(".threeShip");
+    ship3.addEventListener("click", (e) => {
+      ship1.classList.remove("selected");
+      ship2.classList.remove("selected");
+      ship4.classList.remove("selected");
+      ship3.classList.toggle("selected");
+      this.addCellPlaceListeners(gameLogic, 3);
+    });
+
+    const ship2 = document.querySelector(".twoShip");
+    ship2.addEventListener("click", (e) => {
+      ship1.classList.remove("selected");
+      ship4.classList.remove("selected");
+      ship3.classList.remove("selected");
+      ship2.classList.toggle("selected");
+      this.addCellPlaceListeners(gameLogic, 2);
+    });
+
+    const ship1 = document.querySelector(".oneShip");
+    ship1.addEventListener("click", (e) => {
+      ship4.classList.remove("selected");
+      ship2.classList.remove("selected");
+      ship3.classList.remove("selected");
+      ship1.classList.toggle("selected");
+      this.addCellPlaceListeners(gameLogic, 1);
+    });
+  }
+  updateShipCount(shipsPlaced) {
+    const fourCount = document.querySelector("#fourCount");
+    console.log(fourCount);
+    const threeCount = document.querySelector("#threeCount");
+    const twoCount = document.querySelector("#twoCount");
+    const oneCount = document.querySelector("#oneCount");
   }
   displayBoard(gameBoard, direction) {
     let container;
@@ -34,7 +125,7 @@ class DOM {
     }
     container.innerHTML = "";
     let boardArray;
-    console.log(gameBoard);
+
     if (Array.isArray(gameBoard)) {
       boardArray = gameBoard;
     } else {

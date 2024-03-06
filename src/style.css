@@ -15,20 +15,43 @@ main {
   justify-content: center;
   gap: 20px;
 }
-
+.ship {
+  background-color: blue;
+}
+.ship:hover {
+  background-color: darkblue;
+}
 footer {
 }
 #chooseBoardContainer {
-  display: grid;
-  grid-template-columns: repeat(8, 50px);
-  grid-template-rows: repeat(8, 50px);
+  display: flex;
+  flex-direction: column;
   border: 2px black solid;
   padding: 10px;
   border-radius: 10px;
 }
-#chooseBoardContainer > .cell.free {
-  background-color: white;
-  border: none;
+
+#chooseBoardContainer > * {
+  display: flex;
+  align-items: center;
+}
+#chooseBoardContainer > * > * {
+  align-items: center;
+  margin: 10px;
+}
+
+.shipContainer {
+  display: flex;
+  cursor: pointer;
+}
+.shipContainer:hover > * {
+  background-color: darkblue;
+}
+.selected > * {
+  background-color: darkblue;
+  border: 10px black solid;
+}
+.shipContainer > * {
   cursor: default;
 }
 #gameBoardsContainer {
@@ -54,14 +77,7 @@ footer {
   height: 50px;
   width: 50px;
 }
-.cell.selected {
-  /* TODO */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1),
-    0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 5px;
-}
-.cell:active {
-}
+
 .cell:hover {
   background-color: #ccc;
   border: 1px solid #29c22e;
@@ -70,12 +86,6 @@ footer {
   background-color: #ddd;
 }
 
-.ship {
-  background-color: blue;
-}
-.ship:hover {
-  background-color: darkblue;
-}
 .miss {
   background-color: grey;
 }

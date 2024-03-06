@@ -8,9 +8,4 @@ import Gamelogic from "./gamelogic.js";
 import DOM from "./dom.js";
 const gameLogic = new Gamelogic();
 
-gameLogic.initGame(
-  gameLogic.getPlayer1().getBoard(),
-  gameLogic.getPlayer2().getBoard()
-);
-gameLogic.placeShips();
-gameLogic.attack();
+gameLogic.initGame();
