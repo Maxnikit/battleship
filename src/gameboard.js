@@ -173,6 +173,23 @@ class Gameboard {
     }
     return true; // No ships found that are not sunk
   }
+
+  areAllShipsPlaced() {
+    let counter = 0;
+    for (let row of this.board) {
+      for (let cell of row) {
+        if (cell instanceof Ship) {
+          counter = counter + 1;
+        }
+      }
+    }
+    if (counter === 20) {
+      return true;
+    } else {
+      console.log("amount of cells: " + counter);
+      return false;
+    }
+  }
 }
 
 export default Gameboard;

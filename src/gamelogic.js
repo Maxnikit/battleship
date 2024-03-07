@@ -23,6 +23,7 @@ class Gamelogic {
 
     DOM.displayBoard(leftBoard, "left");
     DOM.placeShips(this);
+    DOM.initStartButton(this);
     // DOM.displayBoard(rightBoard, "right");
 
     // DOM.addEventListeners(this.player1.getBoard(), this.player2.getBoard());

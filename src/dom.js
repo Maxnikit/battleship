@@ -3,6 +3,18 @@ const gameBoard2container = document.querySelector(".gameBoard.right");
 const chooseBoardContainer = document.querySelector("#chooseBoardContainer");
 import Gamelogic from "./gamelogic";
 class DOM {
+  initStartButton(gameLogic) {
+    const startButton = document.querySelector(".startButton");
+    startButton.addEventListener("click", (e) => {
+      // check if all ships are placed
+      if (gameLogic.getPlayer1().getBoard().areAllShipsPlaced()) {
+        // start game
+        console.log("start game");
+      } else {
+        console.log("ships not placed");
+      }
+    });
+  }
   processFinishOfPlacement(shipNum) {
     let counter;
     if (shipNum === 4) {
@@ -65,23 +77,25 @@ class DOM {
 
     const ship4 = document.querySelector(".fourShip");
     ship4.addEventListener("click", (e) => {
-      // if (ship1.classList.contains("selected")) {
+      if (parseInt(document.querySelector("#fourCount").innerHTML) === 0) {
+        return false;
+      }
       ship1.classList.remove("selected");
       ship2.classList.remove("selected");
       ship3.classList.remove("selected");
       this.removeCellPlaceListeners();
-      // }
 
       ship4.classList.toggle("selected");
       this.addCellPlaceListeners(gameLogic, 4);
 
       //  this.updateShipCount(4);
-
-      console.log("unexpected");
     });
 
     const ship3 = document.querySelector(".threeShip");
     ship3.addEventListener("click", (e) => {
+      if (parseInt(document.querySelector("#threeCount").innerHTML) === 0) {
+        return false;
+      }
       ship1.classList.remove("selected");
       ship2.classList.remove("selected");
       ship4.classList.remove("selected");
@@ -91,6 +105,9 @@ class DOM {
 
     const ship2 = document.querySelector(".twoShip");
     ship2.addEventListener("click", (e) => {
+      if (parseInt(document.querySelector("#twoCount").innerHTML) === 0) {
+        return false;
+      }
       ship1.classList.remove("selected");
       ship4.classList.remove("selected");
       ship3.classList.remove("selected");
@@ -100,6 +117,9 @@ class DOM {
 
     const ship1 = document.querySelector(".oneShip");
     ship1.addEventListener("click", (e) => {
+      if (parseInt(document.querySelector("#oneCount").innerHTML) === 0) {
+        return false;
+      }
       ship4.classList.remove("selected");
       ship2.classList.remove("selected");
       ship3.classList.remove("selected");
