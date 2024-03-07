@@ -17,7 +17,7 @@ class DOM {
     startButton.addEventListener("click", (e) => {
       // check if all ships are placed
       if (gameLogic.getPlayer1().getBoard().areAllShipsPlaced()) {
-        // start game
+        gameLogic.startGame();
         console.log("start game");
       } else {
         console.log("ships not placed");

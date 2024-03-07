@@ -5,8 +5,8 @@ import Gameboard from "./gameboard";
 
 class Gamelogic {
   constructor() {
-    this.player1 = new Player();
-    this.player2 = new Player();
+    this.player1 = new Player("left");
+    this.player2 = new Player("right");
 
     this.players = [this.player1, this.player2];
   }
@@ -22,6 +22,7 @@ class Gamelogic {
         const location = player.getBoard().getRandomLocation(excludedLocations);
 
         if (player.getBoard().placeShip(location, ship)) {
+          excludedLocations = [];
           counter++;
           console.log(`ship number ${counter} placed`);
           placed = true;
@@ -48,15 +49,16 @@ class Gamelogic {
   getPlayers() {
     return this.players;
   }
+  startGame() {
+    this.getPlayer1().setTurn(true);
+    this.gameLoop();
+  }
   initGame() {
     const leftBoard = this.player1.getBoard();
     const rightBoard = this.player2.getBoard();
-
-    DOM.displayBoard(leftBoard, "left");
-    DOM.displayBoard(rightBoard, "right");
+    this.placeShipsRandomly(this.player1);
     this.placeShipsRandomly(this.player2);
-    DOM.displayBoard(rightBoard, "right");
-    // DOM.placeShips(this);
+    DOM.displayBoard(leftBoard, "left");
     DOM.initStartButton(this);
 
     // DOM.addEventListeners(this.player1.getBoard(), this.player2.getBoard());
@@ -79,28 +81,9 @@ class Gamelogic {
     const guess = prompt(`${player.name}, please enter your guess`);
     return guess;
   }
-  gameLoop() {
-    this.initGame();
-    while (!this.isGameOver()) {
-      for (const player of this.players) {
-        if (player.getIsTurn()) {
-          const guessCoordinate = getPlayerGuess(player);
-          // Get the opponent player
-          const opponent =
-            player === this.player1 ? this.player2 : this.player1;
-          // Get the opponent's gameboard
-          const opponentBoard = opponent.getBoard();
-          opponentBoard.receiveAttack(guessCoordinate);
-          // Check if the hit resulted in a win
-          if (isGameOver(players)) {
-            console.log(`${player.name} wins the game!`);
-            return;
-          }
-
-          // It's now the other player's turn
-          switchTurns(players);
-        }
-      }
+  proceedTurn(player) {
+    if (this.isGameOver()) {
+      alert(`${player.name} won`);
     }
   }
   placeShip(location, shipNum) {

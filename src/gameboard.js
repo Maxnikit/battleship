@@ -39,7 +39,7 @@ class Gameboard {
 
     const result = this.checkForShipCollision(startingLocation, ship);
     if (result === false) {
-      return;
+      return false;
     }
     if (ship.orientation === "horizontal") {
       // check if out of bounds
