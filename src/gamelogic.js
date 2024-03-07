@@ -11,37 +11,32 @@ class Gamelogic {
     this.players = [this.player1, this.player2];
   }
   placeShipsRandomly(player) {
-    function arraysAreEqual(arr1, arr2) {
-      if (arr1.length !== arr2.length) return false;
-      for (let i = 0; i < arr1.length; i++) {
-        if (arr1[i] !== arr2[i]) return false;
-      }
-      return true;
-    }
-    function containsArray(bigArray, targetArray) {
-      return bigArray.some((subArray) => arraysAreEqual(subArray, targetArray));
-    }
     const ships = player.generateShips();
     console.log(ships);
     let excludedLocations = [];
     let counter = 0;
     for (const ship of player.ships) {
       let placed = false;
-
+      let amountOfTries = 0;
       while (!placed) {
-        const location = player.board.getRandomLocation();
-        if (containsArray(excludedLocations, location)) continue;
+        const location = player.getBoard().getRandomLocation(excludedLocations);
 
-        if (player.board.placeShip(location, ship)) {
+        if (player.getBoard().placeShip(location, ship)) {
           counter++;
           console.log(`ship number ${counter} placed`);
           placed = true;
         } else {
+          console.log("ship not placed");
+          console.log(ship);
+          amountOfTries++;
+          console.log(amountOfTries);
           excludedLocations.push(location);
           console.log(excludedLocations);
         }
       }
     }
+
+    return player.getBoard();
   }
   getPlayer1() {
     return this.player1;

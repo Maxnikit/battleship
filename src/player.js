@@ -41,6 +41,10 @@ class Player {
 
     return this.ships;
   }
+
+  getShips() {
+    return this.ships;
+  }
   getIsTurn() {
     return this.isTurn;
   }

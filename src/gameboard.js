@@ -8,7 +8,20 @@ class Gameboard {
       this.board[i] = new Array(this.size).fill(0);
     }
   }
-  getRandomLocation() {
+  getRandomLocation(excludedLocations = []) {
+    let location;
+    do {
+      location = this.generateRandomLocation(); // Replace with your method of generating a location
+    } while (this.isLocationExcluded(location, excludedLocations));
+    return location;
+  }
+
+  isLocationExcluded(location, excludedLocations) {
+    return excludedLocations.some(
+      (excluded) => excluded[0] === location[0] && excluded[1] === location[1]
+    );
+  }
+  generateRandomLocation() {
     const result = [
       Math.floor(Math.random() * this.size),
       Math.floor(Math.random() * this.size),
@@ -55,6 +68,7 @@ class Gameboard {
     });
 
     if (collisionTestResults.includes(false)) {
+      ship.positions = [];
       return false;
     } else {
       if (ship.orientation === "horizontal") {
