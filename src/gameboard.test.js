@@ -36,6 +36,25 @@ describe("placing ships", () => {
     gameboardInstance.placeShip([0, 0], shipInstance);
     expect(gameboardInstance.getBoard()[0][0]).toBe(shipInstance);
   });
+  test("put a 4ship on left-up edge", () => {
+    const shipInstance = new Ship(4);
+    expect(gameboardInstance.placeShip([0, 0], shipInstance)).toBe(true);
+  });
+
+  test("put a 4ship on right-up edge", () => {
+    const shipInstance = new Ship(4);
+    expect(gameboardInstance.placeShip([0, 6], shipInstance)).toBe(true);
+  });
+
+  test("put a 4ship on right-down edge", () => {
+    const shipInstance = new Ship(4);
+    expect(gameboardInstance.placeShip([9, 6], shipInstance)).toBe(true);
+  });
+
+  test("put a 4ship on left-down edge", () => {
+    const shipInstance = new Ship(4);
+    expect(gameboardInstance.placeShip([9, 0], shipInstance)).toBe(true);
+  });
   test("try to put a ship next to another ship", () => {
     const shipInstance = new Ship(4);
     gameboardInstance.placeShip([0, 0], shipInstance);

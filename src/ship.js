@@ -1,5 +1,5 @@
 class Ship {
-  constructor(length) {
+  constructor(length, orientation = "horizontal") {
     const minLength = 1;
     const maxLength = 4;
     if (length < minLength || length > maxLength) {
@@ -10,7 +10,7 @@ class Ship {
     this.hits = [];
     this.positions = [];
     this.health = length - this.hits;
-    this.orientation = "horizontal";
+    this.orientation = orientation;
     this.location = [];
   }
 

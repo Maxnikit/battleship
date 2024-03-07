@@ -8,7 +8,13 @@ class Gameboard {
       this.board[i] = new Array(this.size).fill(0);
     }
   }
-
+  getRandomLocation() {
+    const result = [
+      Math.floor(Math.random() * this.size),
+      Math.floor(Math.random() * this.size),
+    ];
+    return result;
+  }
   getBoard() {
     return this.board;
   }
@@ -16,13 +22,6 @@ class Gameboard {
     return this.board[location[0]][location[1]];
   }
   placeShip(startingLocation, ship) {
-    // Check if ship is out of bounds
-    if (
-      startingLocation[0] + ship.length > this.size ||
-      startingLocation[1] + ship.length > this.size
-    ) {
-      throw new Error("Ship is out of bounds");
-    }
     // Check if other ships are too close
 
     const result = this.checkForShipCollision(startingLocation, ship);
@@ -30,12 +29,19 @@ class Gameboard {
       return;
     }
     if (ship.orientation === "horizontal") {
+      // check if out of bounds
+      if (startingLocation[1] + ship.length > this.size) {
+        return false;
+      }
       for (let i = 0; i < ship.length; i++) {
         ship.positions.push([startingLocation[0], startingLocation[1] + i]);
 
         // this.board[startingLocation[0]][startingLocation[1] + i] = ship;
       }
     } else {
+      if (startingLocation[0] + ship.length > this.size) {
+        return false;
+      }
       for (let i = 0; i < ship.length; i++) {
         ship.positions.push([startingLocation[0] + i, startingLocation[1]]);
 

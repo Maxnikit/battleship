@@ -3,6 +3,15 @@ const gameBoard2container = document.querySelector(".gameBoard.right");
 const chooseBoardContainer = document.querySelector("#chooseBoardContainer");
 import Gamelogic from "./gamelogic";
 class DOM {
+  initRotateListener(location, gameLogic) {
+    const cellID = `${location[0]}-${location[1]}`;
+    const cell = document.getElementById(cellID);
+    cell.addEventListener("click", (e) => {
+      console.log("rotate");
+      gameLogic.rotateShip(location);
+      this.displayBoard(gameLogic.getPlayer1().getBoard(), "left");
+    });
+  }
   initStartButton(gameLogic) {
     const startButton = document.querySelector(".startButton");
     startButton.addEventListener("click", (e) => {
@@ -15,7 +24,13 @@ class DOM {
       }
     });
   }
-  processFinishOfPlacement(shipNum) {
+  initRandomizeButton(gameLogic) {
+    const randomizeButton = document.querySelector(".randomizeButton");
+    randomizeButton.addEventListener("click", (e) => {
+      gameLogic.placeShipsRandomly(gameLogic.getPlayer1());
+    });
+  }
+  processFinishOfPlacement(shipNum, location, gameLogic) {
     let counter;
     if (shipNum === 4) {
       counter = document.querySelector("#fourCount");
@@ -39,6 +54,9 @@ class DOM {
     const currentCounter = parseInt(counter.innerHTML);
     const newCounter = currentCounter - 1;
     counter.innerHTML = newCounter + " x";
+
+    // addEventListener for rotation
+    this.initRotateListener(location, gameLogic);
   }
   removeCellPlaceListeners() {
     const cells = document.querySelectorAll(".gameBoard.left .cell");
@@ -62,7 +80,7 @@ class DOM {
         // TODO fix bounds checking when placing new ship
         if (gameLogic.placeShip(location, shipNum)) {
           console.log("ship placed");
-          this.processFinishOfPlacement(shipNum);
+          this.processFinishOfPlacement(shipNum, location, gameLogic);
           return true;
         } else {
           console.log("ship not placed");
